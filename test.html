@@ -1,0 +1,38 @@
+<style>img {width :360px;}</style>
+<script src="urlT8.js"></script>
+<script src="imgT8.js"></script>
+<div id="demo"></div>
+<script>
+function getUrlVar() {
+	var result = {};
+	var location = window.location.href.split('#');
+	var parts = location[0].replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) { result [key] = value; });
+	return result;
+}
+var e = getUrlVar()["e"];
+var u = getUrlVar()["u"];
+var p = getUrlVar()["p"];
+var page = getUrlVar()["page"];
+if (p >= 1){ var page = page; }else{ var page = 1; }
+var total = arrUrl.length;
+var size = 5;
+var start = size*(page-1);
+var end = size*page;
+var last =  Math.ceil(total/size);
+var x = (page*1-1)*(size*1+1);
+var videoFrame = '<iframe src="'+u+'/" frameborder="0" height="380px" width="600px" scrolling="no" name="t8_embed_video"></iframe>';
+if (e >= 1){ var embed = videoFrame; }else{ var embed = ''; }
+let text = embed+'<h3>page: '+page+' of: '+last+' | '+total+' files</h3><a href="?p=1&page='+(page*1+1)+'">NEXT &raquo;</a>';
+for (let i = start; i < total && i < end; i++) {
+	var thumb = imgT8+arrImg[i];
+	var links = urlT8+arrUrl[i];
+	var len = arrUrl[i].length;
+	var strt = arrUrl[i].search("/")+1;
+	var ttl = arrUrl[i].substr(strt, (len-strt-9));
+	var title = ttl.replace(/-/g, " ");
+	var cats = arrUrl[i].substr(0, (strt-1));
+	text += '<div><a href="?p=1&page='+page+'&e=1&u='+links+'"><img src="'+thumb+'" alt="img"></a><br>Category: '+cats.toUpperCase()+'<br>'+title+'</div>';
+}
+text += '<a href="?p=1&page='+(page*1+1)+'">NEXT &raquo;</a>';
+document.getElementById("demo").innerHTML = text;
+</script>
